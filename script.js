@@ -138,51 +138,49 @@ class ChamaApp {
       return
     }
 
-    // Show loading state
+    // Show loading state briefly
     const createBtn = document.getElementById("createSessionBtn")
     const originalText = createBtn.innerHTML
-    createBtn.innerHTML = '<span class="btn-icon">⏳</span>Creating...'
+    createBtn.innerHTML = '<span class="btn-icon">✨</span>Creating...'
     createBtn.disabled = true
 
-    setTimeout(() => {
-      // Generate session ID
-      const sessionId = this.generateSessionId()
+    // Generate session immediately (remove setTimeout)
+    const sessionId = this.generateSessionId()
 
-      // Create session data
-      const session = {
-        id: sessionId,
-        groupName: groupName,
-        groupSize: groupSize,
-        groupDescription: groupDescription,
-        availableNumbers: Array.from({ length: groupSize }, (_, i) => i + 1),
-        drawnNumbers: [],
-        createdAt: new Date().toISOString(),
-      }
+    // Create session data
+    const session = {
+      id: sessionId,
+      groupName: groupName,
+      groupSize: groupSize,
+      groupDescription: groupDescription,
+      availableNumbers: Array.from({ length: groupSize }, (_, i) => i + 1),
+      drawnNumbers: [],
+      createdAt: new Date().toISOString(),
+    }
 
-      // Save to localStorage
-      localStorage.setItem(`chama_session_${sessionId}`, JSON.stringify(session))
+    // Save to localStorage
+    localStorage.setItem(`chama_session_${sessionId}`, JSON.stringify(session))
 
-      // Generate shareable link
-      const shareableLink = `${window.location.origin}/#draw/${sessionId}`
+    // Generate shareable link
+    const shareableLink = `${window.location.origin}/#draw/${sessionId}`
 
-      // Update UI
-      document.getElementById("totalMembers").textContent = groupSize
-      document.getElementById("maxNumber").textContent = groupSize
-      document.getElementById("shareableLink").value = shareableLink
-      document.getElementById("getMyNumberBtn").href = shareableLink
-      document.getElementById("sessionGroupName").textContent = groupName
-      document.getElementById("sessionGroupSize").textContent = groupSize
-      document.getElementById("sessionId").textContent = sessionId
+    // Update UI
+    document.getElementById("totalMembers").textContent = groupSize
+    document.getElementById("maxNumber").textContent = groupSize
+    document.getElementById("shareableLink").value = shareableLink
+    document.getElementById("getMyNumberBtn").href = shareableLink
+    document.getElementById("sessionGroupName").textContent = groupName
+    document.getElementById("sessionGroupSize").textContent = groupSize
+    document.getElementById("sessionId").textContent = sessionId
 
-      this.currentSession = session
-      this.showPage("session")
-      this.showToast("🎉 Session created successfully!", "success")
-      this.playSound()
+    this.currentSession = session
+    this.showPage("session")
+    this.showToast("🎉 Session created instantly!", "success")
+    this.playSound()
 
-      // Reset button
-      createBtn.innerHTML = originalText
-      createBtn.disabled = false
-    }, 1000)
+    // Reset button immediately
+    createBtn.innerHTML = originalText
+    createBtn.disabled = false
   }
 
   loadDrawPage(sessionId) {
@@ -294,7 +292,7 @@ class ChamaApp {
       // Reset button
       drawBtn.innerHTML = originalText
       drawBtn.disabled = false
-    }, 2000)
+    }, 800)
   }
 
   showDrawResult(number) {
