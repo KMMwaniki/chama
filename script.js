@@ -2,12 +2,10 @@ class ChamaApp {
   constructor() {
     this.currentPage = "home"
     this.currentSession = null
-    this.darkMode = localStorage.getItem("darkMode") === "true"
     this.init()
   }
 
   init() {
-    this.initDarkMode()
     this.bindEvents()
     this.cleanupOldSessions()
 
@@ -23,18 +21,7 @@ class ChamaApp {
     this.updateSizePreview()
   }
 
-  initDarkMode() {
-    if (this.darkMode) {
-      document.documentElement.setAttribute("data-theme", "dark")
-    }
-  }
-
   bindEvents() {
-    // Dark mode toggle
-    document.getElementById("darkModeToggle").addEventListener("click", () => {
-      this.toggleDarkMode()
-    })
-
     // Home page events
     document.getElementById("groupSize").addEventListener("input", () => {
       this.updateSizePreview()
@@ -83,19 +70,6 @@ class ChamaApp {
     document.getElementById("shareResultBtn").addEventListener("click", () => {
       this.shareResult()
     })
-  }
-
-  toggleDarkMode() {
-    this.darkMode = !this.darkMode
-    localStorage.setItem("darkMode", this.darkMode.toString())
-
-    if (this.darkMode) {
-      document.documentElement.setAttribute("data-theme", "dark")
-    } else {
-      document.documentElement.removeAttribute("data-theme")
-    }
-
-    this.showToast("Theme updated!", "success")
   }
 
   checkURL() {
