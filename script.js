@@ -142,18 +142,21 @@ class ChamaApp {
     // Generate shareable link
     const shareableLink = `${window.location.origin}/#draw/${sessionId}`
 
-    // Update UI
+    // Update UI - make sure all elements exist and are updated
     document.getElementById("totalMembers").textContent = groupSize
-    document.getElementById("maxNumber").textContent = groupSize
     document.getElementById("shareableLink").value = shareableLink
     document.getElementById("getMyNumberBtn").href = shareableLink
     document.getElementById("sessionGroupName").textContent = groupName
     document.getElementById("sessionGroupSize").textContent = groupSize
     document.getElementById("sessionId").textContent = sessionId
 
+    // Store current session
     this.currentSession = session
+
+    // Show success page
     this.showPage("session")
-    this.showToast("🎉 Session created instantly!", "success")
+    this.showToast("🎉 Session created successfully!", "success")
+
     this.playSound()
 
     // Reset button immediately
@@ -500,8 +503,14 @@ Powered by CHAMA Draw 🚀`
       page.classList.remove("active")
     })
 
-    // Show selected page
-    document.getElementById(`${pageName}Page`).classList.add("active")
+    // Show selected page with a small delay to ensure DOM is ready
+    setTimeout(() => {
+      const targetPage = document.getElementById(`${pageName}Page`)
+      if (targetPage) {
+        targetPage.classList.add("active")
+      }
+    }, 50)
+
     this.currentPage = pageName
 
     // Update URL without page reload
