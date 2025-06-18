@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAMA Number Draw - Fair & Fun Group Rotation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Create fair random number systems for your CHAMA group. Easy sharing, unique numbers, mobile-friendly.">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle" class="dark-mode-toggle" title="Toggle Dark Mode">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🎯</div>
+                <h1>CHAMA Draw</h1>
+            </div>
+            <p class="tagline">Fair • Fast • Fun group rotation system</p>
+        </header>
+
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <div class="card main-card">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <div class="icon">👥</div>
+                    </div>
+                    <h2>Set Up Your Group</h2>
+                    <p>Create a fair random number system for your CHAMA group</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="groupName">
+                            <span class="label-icon">📝</span>
+                            Group Name (Optional)
+                        </label>
+                        <input type="text" id="groupName" placeholder="e.g., Friends CHAMA, Office Savings" maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupSize">
+                            <span class="label-icon">🔢</span>
+                            Number of People in Group *
+                        </label>
+                        <input type="number" id="groupSize" min="2" max="100" placeholder="Enter total members">
+                        <div class="input-helper">
+                            Each person gets a unique number from 1 to <span id="sizePreview" class="highlight">X</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupDescription">
+                            <span class="label-icon">💭</span>
+                            Description (Optional)
+                        </label>
+                        <textarea id="groupDescription" placeholder="Brief description of your group or rotation schedule" maxlength="200"></textarea>
+                    </div>
+
+                    <button id="createSessionBtn" class="btn btn-primary btn-large">
+                        <span class="btn-icon">✨</span>
+                        Create Shareable Link
+                        <div class="btn-shine"></div>
+                    </button>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <h4>Secure</h4>
+                        <p>Each person can only draw once</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📱</div>
+                        <h4>Mobile Ready</h4>
+                        <p>Works perfectly on all devices</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Instant</h4>
+                        <p>No registration required</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Created Page -->
+        <div id="sessionPage" class="page">
+            <div class="card success-card">
+                <div class="success-animation">
+                    <div class="checkmark-circle">
+                        <div class="checkmark"></div>
+                    </div>
+                </div>
+                
+                <div class="card-header">
+                    <h2>🎉 Session Created!</h2>
+                    <p>Share this link with all <span id="totalMembers" class="highlight"></span> group members</p>
+                </div>
+
+                <div class="share-section">
+                    <div class="form-group">
+                        <label>📎 Shareable Link</label>
+                        <div class="link-container">
+                            <input type="text" id="shareableLink" readonly>
+                            <button id="copyBtn" class="btn btn-icon-only" title="Copy Link">
+                                <span class="copy-icon">📋</span>
+                                <span class="copied-icon">✅</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="share-buttons">
+                        <button id="whatsappBtn" class="btn btn-whatsapp">
+                            <span class="btn-icon">📱</span>
+                            Share on WhatsApp
+                        </button>
+                        <button id="qrCodeBtn" class="btn btn-secondary">
+                            <span class="btn-icon">📱</span>
+                            Show QR Code
+                        </button>
+                    </div>
+                </div>
+
+                <div class="instructions-card">
+                    <h4>📋 How it works:</h4>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Share the link</strong>
+                                <p>Send to all group members via WhatsApp, SMS, or any messaging app</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>Everyone draws</strong>
+                                <p>Each person clicks the link once to get their unique number</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Start rotating</strong>
+                                <p>Numbers determine the order for receiving contributions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a id="getMyNumberBtn" href="#" target="_blank" class="btn btn-primary">
+                        <span class="btn-icon">🎲</span>
+                        Get My Number
+                    </a>
+                    <button id="viewResultsBtn" class="btn btn-secondary">
+                        <span class="btn-icon">📊</span>
+                        View Results
+                    </button>
+                    <button id="newSessionBtn" class="btn btn-outline">
+                        <span class="btn-icon">➕</span>
+                        New Session
+                    </button>
+                </div>
+
+                <div class="session-info">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Group</span>
+                            <span id="sessionGroupName" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Members</span>
+                            <span id="sessionGroupSize" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Session ID</span>
+                            <code id="sessionId" class="info-value"></code>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="status-badge status-active">🟢 Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div id="resultsPage" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 Session Results</h2>
+                    <p id="resultsGroupName">Group Results</p>
+                </div>
+
+                <div class="results-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="drawnCount">0</div>
+                        <div class="stat-label">Numbers Drawn</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="remainingCount">0</div>
+                        <div class="stat-label">Remaining</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="progressPercent">0%</div>
+                        <div class="stat-label">Complete</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div id="drawnNumbersList" class="drawn-numbers">
+                    <!-- Numbers will be populated here -->
+                </div>
+
+                <div id="availableNumbersList" class="available-numbers">
+                    <h4>Available Numbers</h4>
+                    <div class="numbers-grid" id="availableGrid">
+                        <!-- Available numbers will be shown here -->
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="refreshResultsBtn" class="btn btn-primary">
+                        <span class="btn-icon">🔄</span>
+                        Refresh
+                    </button>
+                    <button id="exportResultsBtn" class="btn btn-secondary">
+                        <span class="btn-icon">📥</span>
+                        Export Results
+                    </button>
+                    <button id="backToSessionBtn" class="btn btn-outline">
+                        <span class="btn-icon">⬅️</span>
+                        Back
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draw Page -->
+        <div id="drawPage" class="page">
+            <div class="card draw-card">
+                <div class="card-header">
+                    <h2 id="drawGroupName">CHAMA Group</h2>
+                    <p id="drawGroupDescription">Draw your unique number</p>
+                </div>
+
+                <!-- Before Drawing -->
+                <div id="beforeDraw">
+                    <div class="draw-stats">
+                        <div class="stat-circle">
+                            <div class="stat-number" id="numbersDrawn">0</div>
+                            <div class="stat-label">Drawn</div>
+                        </div>
+                        <div class="stat-divider">of</div>
+                        <div class="stat-circle">
+                            <div class="stat-number" id="totalNumbers">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                    </div>
+
+                    <div class="draw-button-container">
+                        <button id="drawNumberBtn" class="btn btn-draw">
+                            <span class="btn-icon">🎲</span>
+                            <span class="btn-text">Draw My Number</span>
+                            <div class="btn-shine"></div>
+                        </button>
+                        <div class="draw-hint">Tap to get your unique position number</div>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>🔒 Fair & Secure</h4>
+                        <ul>
+                            <li>Each person can only draw once</li>
+                            <li>Every number from 1 to <span id="maxNumberInfo">X</span> is unique</li>
+                            <li>Your number determines your rotation position</li>
+                        </ul>
+                    </div>
+
+                    <div class="remaining-indicator">
+                        <div class="indicator-icon">⏳</div>
+                        <span id="remainingNumbers">0</span> numbers remaining
+                    </div>
+                </div>
+
+                <!-- After Drawing -->
+                <div id="afterDraw" class="hidden">
+                    <div class="result-celebration">
+                        <div class="confetti-container" id="confettiContainer"></div>
+                        <div class="result-icon">🏆</div>
+                        <h3>Your Lucky Number!</h3>
+                        
+                        <div class="number-reveal">
+                            <div class="number-circle-large">
+                                <span id="drawnNumber">0</span>
+                            </div>
+                        </div>
+
+                        <div class="result-message">
+                            <h4>🎯 What this means:</h4>
+                            <p id="explanationText"></p>
+                        </div>
+
+                        <div class="result-stats">
+                            <div class="result-stat">
+                                <span class="stat-value" id="finalNumbersDrawn">0</span>
+                                <span class="stat-label">Numbers Drawn</span>
+                            </div>
+                            <div class="result-stat">
+                                <span class="stat-value" id="finalTotalNumbers">0</span>
+                                <span class="stat-label">Total Members</span>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="shareResultBtn" class="btn btn-primary">
+                                <span class="btn-icon">📤</span>
+                                Share My Number
+                            </button>
+                            <button onclick="window.location.href='/'" class="btn btn-secondary">
+                                <span class="btn-icon">🏠</span>
+                                Create New Session
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="hidden">
+                    <div class="error-container">
+                        <div class="error-icon">😔</div>
+                        <h3>Oops! Something went wrong</h3>
+                        <p id="errorMessage">Session not found or expired</p>
+                        <button onclick="window.location.href='/'" class="btn btn-primary">
+                            <span class="btn-icon">🏠</span>
+                            Go Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Modal -->
+        <div id="qrModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📱 QR Code</h3>
+                    <button id="closeQrModal" class="close-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div id="qrCodeContainer" class="qr-container">
+                        <canvas id="qrCanvas"></canvas>
+                    </div>
+                    <p>Scan this QR code to join the session</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Audio for sound effects -->
+    <audio id="drawSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
