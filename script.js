@@ -44,10 +44,6 @@ class ChamaApp {
       this.shareOnWhatsApp()
     })
 
-    document.getElementById("qrCodeBtn").addEventListener("click", () => {
-      this.showQRCode()
-    })
-
     document.getElementById("viewResultsBtn").addEventListener("click", () => {
       this.showResults()
     })
@@ -77,24 +73,6 @@ class ChamaApp {
 
     document.getElementById("shareResultBtn").addEventListener("click", () => {
       this.shareResult()
-    })
-
-    // Modal events
-    document.getElementById("closeQrModal").addEventListener("click", () => {
-      this.hideQRCode()
-    })
-
-    document.getElementById("qrModal").addEventListener("click", (e) => {
-      if (e.target.id === "qrModal") {
-        this.hideQRCode()
-      }
-    })
-
-    // Keyboard events
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        this.hideQRCode()
-      }
     })
   }
 
@@ -144,7 +122,7 @@ class ChamaApp {
     createBtn.innerHTML = '<span class="btn-icon">✨</span>Creating...'
     createBtn.disabled = true
 
-    // Generate session immediately (remove setTimeout)
+    // Generate session immediately
     const sessionId = this.generateSessionId()
 
     // Create session data
@@ -282,10 +260,6 @@ class ChamaApp {
       // Show result with celebration
       this.showDrawResult(drawnNumber)
       this.showToast(`🎉 You drew number ${drawnNumber}!`, "success")
-      this.playSound()
-      this.createConfetti()
-
-      // Reset button  "success")
       this.playSound()
       this.createConfetti()
 
@@ -486,50 +460,9 @@ Powered by CHAMA Draw 🚀`
     window.open(whatsappUrl, "_blank")
   }
 
-  showQRCode() {
-    const link = document.getElementById("shareableLink").value
-    const modal = document.getElementById("qrModal")
-    const canvas = document.getElementById("qrCanvas")
-
-    // Simple QR code generation (you could use a library like qrcode.js for better results)
-    this.generateQRCode(canvas, link)
-    modal.classList.remove("hidden")
-  }
-
-  hideQRCode() {
-    document.getElementById("qrModal").classList.add("hidden")
-  }
-
-  generateQRCode(canvas, text) {
-    // Simple QR code placeholder - in production, use a proper QR code library
-    const ctx = canvas.getContext("2d")
-    canvas.width = 200
-    canvas.height = 200
-
-    // Create a simple pattern as placeholder
-    ctx.fillStyle = "#000"
-    ctx.fillRect(0, 0, 200, 200)
-    ctx.fillStyle = "#fff"
-    ctx.font = "12px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText("QR Code", 100, 90)
-    ctx.fillText("Scan to join", 100, 110)
-    ctx.fillText("session", 100, 130)
-
-    // Add some pattern
-    for (let i = 0; i < 200; i += 20) {
-      for (let j = 0; j < 200; j += 20) {
-        if (Math.random() > 0.5) {
-          ctx.fillStyle = "#fff"
-          ctx.fillRect(i, j, 10, 10)
-        }
-      }
-    }
-  }
-
   createConfetti() {
     const container = document.getElementById("confettiContainer")
-    const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#6c5ce7"]
+    const colors = ["#3b82f6", "#10b981", "#6366f1", "#8b5cf6", "#06b6d4"]
 
     for (let i = 0; i < 50; i++) {
       const confetti = document.createElement("div")
