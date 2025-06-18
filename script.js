@@ -9,9 +9,18 @@ class ChamaApp {
   init() {
     this.initDarkMode()
     this.bindEvents()
-    this.checkURL()
-    this.updateSizePreview()
     this.cleanupOldSessions()
+
+    // Check URL immediately and also on hash change
+    this.checkURL()
+
+    // Listen for hash changes (when someone clicks a link)
+    window.addEventListener("hashchange", () => {
+      console.log("Hash changed, checking URL") // Debug log
+      this.checkURL()
+    })
+
+    this.updateSizePreview()
   }
 
   initDarkMode() {
@@ -90,12 +99,16 @@ class ChamaApp {
   }
 
   checkURL() {
-    const path = window.location.pathname
     const hash = window.location.hash
+    console.log("Current hash:", hash)
 
-    if (path === "/" && hash.startsWith("#draw/")) {
-      const sessionId = hash.replace("#draw/", "")
-      this.loadDrawPage(sessionId)
+    if (hash && hash.startsWith("#draw/")) {
+      const parts = hash.replace("#draw/", "").split("/")
+      const sessionId = parts[0]
+      const encodedData = parts[1]
+
+      console.log("Detected sessionId:", sessionId, "encodedData:", !!encodedData)
+      this.loadDrawPage(sessionId, encodedData)
     } else {
       this.showPage("home")
     }
@@ -136,13 +149,23 @@ class ChamaApp {
       createdAt: new Date().toISOString(),
     }
 
-    // Save to localStorage
+    // Encode session data in URL (compressed)
+    const sessionData = btoa(
+      JSON.stringify({
+        n: groupName,
+        s: groupSize,
+        d: groupDescription,
+        c: session.createdAt,
+      }),
+    )
+
+    // Save to localStorage for creator
     localStorage.setItem(`chama_session_${sessionId}`, JSON.stringify(session))
 
-    // Generate shareable link
-    const shareableLink = `${window.location.origin}/#draw/${sessionId}`
+    // Generate shareable link with encoded data
+    const shareableLink = `${window.location.origin}/#draw/${sessionId}/${sessionData}`
 
-    // Update UI - make sure all elements exist and are updated
+    // Update UI
     document.getElementById("totalMembers").textContent = groupSize
     document.getElementById("shareableLink").value = shareableLink
     document.getElementById("getMyNumberBtn").href = shareableLink
@@ -164,11 +187,36 @@ class ChamaApp {
     createBtn.disabled = false
   }
 
-  loadDrawPage(sessionId) {
-    const sessionData = localStorage.getItem(`chama_session_${sessionId}`)
+  loadDrawPage(sessionId, encodedData = null) {
+    console.log("Loading draw page for session:", sessionId)
+    let sessionData = localStorage.getItem(`chama_session_${sessionId}`)
+
+    // If no local session but we have encoded data, create from URL
+    if (!sessionData && encodedData) {
+      try {
+        const decoded = JSON.parse(atob(encodedData))
+        const session = {
+          id: sessionId,
+          groupName: decoded.n,
+          groupSize: decoded.s,
+          groupDescription: decoded.d,
+          availableNumbers: Array.from({ length: decoded.s }, (_, i) => i + 1),
+          drawnNumbers: [],
+          createdAt: decoded.c,
+        }
+
+        // Save to localStorage for this user
+        localStorage.setItem(`chama_session_${sessionId}`, JSON.stringify(session))
+        sessionData = JSON.stringify(session)
+        console.log("Created session from URL data")
+      } catch (error) {
+        console.error("Error decoding session data:", error)
+      }
+    }
 
     if (!sessionData) {
-      this.showDrawError("Session not found or expired")
+      this.showPage("draw")
+      this.showDrawError("Session not found or expired. Please ask the group creator for a new link.")
       return
     }
 
@@ -182,15 +230,19 @@ class ChamaApp {
 
       if (hoursDiff > 24) {
         localStorage.removeItem(`chama_session_${sessionId}`)
-        this.showDrawError("Session has expired (24 hours)")
+        this.showPage("draw")
+        this.showDrawError("Session has expired (24 hours). Please ask the group creator for a new link.")
         return
       }
 
       this.currentSession = session
       this.updateDrawPageUI()
       this.showPage("draw")
+      console.log("Successfully loaded draw page")
     } catch (error) {
-      this.showDrawError("Invalid session data")
+      console.error("Error parsing session data:", error)
+      this.showPage("draw")
+      this.showDrawError("Invalid session data. Please ask the group creator for a new link.")
     }
   }
 
@@ -290,10 +342,16 @@ class ChamaApp {
   }
 
   showDrawError(message) {
+    // Make sure we're on the draw page
+    this.showPage("draw")
+
+    // Hide the drawing interface and show error
     document.getElementById("beforeDraw").classList.add("hidden")
     document.getElementById("afterDraw").classList.add("hidden")
     document.getElementById("errorState").classList.remove("hidden")
     document.getElementById("errorMessage").textContent = message
+
+    console.log("Showing draw error:", message) // Debug log
   }
 
   showResults() {
